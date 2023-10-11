@@ -47,7 +47,7 @@ class Crawler {
 	
 				const allEmbeddingsWithMetaData: any[] = [];
 				
-				for (let file of files) {
+				for (const file of files) {
 					try {
 						const data = await fs.promises.readFile(this.dataPath + "/" + file, "utf8");
 						const content = (frontMatter as any)(data);
