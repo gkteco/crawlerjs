@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",       // Set target ES version (choose what's appropriate for your Node.js version)
+    "module": "NodeNext",    // Use CommonJS modules for Node.js
+    "strict": false,          // Enable all strict type-checking options
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true, // Enables CommonJS/AMD module interoperability
+    "skipLibCheck": true,    // Skip type-checking declaration files
+    "outDir": "./dist"      // Transpile output to 'dist' directory
+  },
+  "include": [
+    "src/**/*.ts"  // Source files to be compiled (assuming you'll keep TypeScript files in a 'src' directory)
+  ],
+  "exclude": [
+    "node_modules" // Don’t include node_modules
+  ]
+}
+
