@@ -7,14 +7,19 @@ import { fileURLToPath } from 'url';
 class Crawler {
 	dataPath: string;
 	pipe: any;	
+	model: string;
+	pipeline: Function;
+	seqLength: number;
 
-	constructor(pathSegment: string) {
+	constructor(pathSegment: string, model: string, seqLength: number, transformerPipeline: Function) {
 		const __filename = fileURLToPath(import.meta.url);
 		this.dataPath = join(dirname(__filename), "..", pathSegment);
+		this.model = model;
+		this.pipeline = transformerPipeline;
+		this.seqLength = seqLength;
 	}
 	async init() {
-		const { pipeline } = await import("@xenova/transformers");
-		this.pipe = await pipeline("embeddings", "Xenova/all-MiniLM-L6-v2");
+		this.pipe = await this.pipeline("embeddings", this.model); 
 	}
 
 	async embedder(text: string) {
@@ -46,7 +51,7 @@ class Crawler {
 					try {
 						const data = await fs.promises.readFile(this.dataPath + "/" + file, "utf8");
 						const content = (frontMatter as any)(data);
-						const articles: string[] = this.batchAndClean(content.body, 2);
+						const articles: string[] = this.batchAndClean(content.body, this.seqLength);
 						const embeddingsWithMetaData = await Promise.all(articles.map(async (article) => {
 							return {
 								metadata: content.attributes,
